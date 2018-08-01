@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>扫码</title>
+</head>
+<body>
+	<div onclick="scanCode();">扫一扫</div>
+
+	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript">
+		 function scanCode() { 
+    	  wx.scanQRCode({ 
+    	   needResult : 1, 
+    	   scanType : [ "qrCode", "barCode" ], 
+    	   success : function(res) { 
+    	    console.log(res) 
+    	    var result = res.resultStr; 
+    	    var index = result .lastIndexOf("\/");  
+    	    result  = result .substring(index + 1, result .length);
+    	    getMachineCode(result);
+    	   }, 
+    	   fail : function(res) { 
+    	    //console.log(res) 
+    	    //alert(JSON.stringify(res));
+    	    alert("扫码失效")
+    	  
+    	   } 
+    	  }); 
+    	 }
+
+
+     function getMachineCode(result){
+    	$.ajax({ 
+ 		   url : "http://anmoyi.momole.com.cn/momole_test"+"/machine/getMachineCode.json", 
+ 		   data : {'code':result}, 
+ 		   method : 'GET',
+ 		   dataType : "json",
+ 		   success : function(data) { 
+ 			 //console.log(data);
+ 			 $("[name=machineCode]").val(data.object.machineCode);
+ 		   } 
+ 		  }); 
+    } 
+	</script>
+</body>
+</html>
