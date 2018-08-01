@@ -9,6 +9,33 @@
 	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 	<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript">
+        getWechatSign()
+   function getWechatSign(){
+       $.ajax({ 
+           url : "http://anmoyi.momole.com.cn/momole_test"+"/scan/getWechatSign.json", 
+           data : {'url':location.href}, 
+           method : 'GET',
+           dataType : "json",
+           success : function(o) { 
+             //console.log(o);
+             wxConfig(o.appId, o.timestamp, o.nonceStr,o.signature); 
+           } 
+          }); 
+   } 
+    
+    function wxConfig(appId,timestamp,nonceStr,signature){
+       wx.config({
+            debug:false,
+            appId:appId,
+            timestamp:timestamp,
+            nonceStr:nonceStr,
+            signature :signature ,
+            jsApiList : [ 'onMenuShareTimeline', 'onMenuShareAppMessage', 
+                 'onMenuShareQQ', 'onMenuShareWeibo', 'scanQRCode' ] 
+              // 必填，需要使用的JS接口列表，所有JS接口列表见附录2 
+        });
+   }
+   
 		 function scanCode() { 
     	  wx.scanQRCode({ 
     	   needResult : 1, 
